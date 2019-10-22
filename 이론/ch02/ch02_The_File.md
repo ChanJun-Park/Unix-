@@ -77,7 +77,7 @@ open(filename, O_WRONLY | O_CREAT | O_TRUNC); // 파일 쓰기전용으로 열�
 ```c
 #include <fcntl.h>
 
-int fd = create(const char* pathname, mode_t mode);
+int fd = creat(const char* pathname, mode_t mode);
 ```
 
 - 성공시 해당 파일 지시자
@@ -85,7 +85,7 @@ int fd = create(const char* pathname, mode_t mode);
 - mode의 경우 새로 파일을 생성하는 경우에만 유효하다.
 
 ```c
-fd = create("test", 0644);
+fd = creat("test", 0644);
 
 ==
 
@@ -119,7 +119,7 @@ int close(int fd);
 ```c
 #include <unistd.h>
 
-size_t read(int fd, char* buffer, ssize_t size);
+ssize_t read(int fd, char* buffer, size_t size);
 ```
 
 - 성공시 읽어들인 바이트수, 파일 끝 도달시 0 ,실패시 -1
@@ -136,7 +136,7 @@ size_t read(int fd, char* buffer, ssize_t size);
 ```c
 #include <unistd.h>
 
-size_t write(int fd, char* buffer, ssize_t size);
+ssize_t write(int fd, char* buffer, size_t size);
 ```
 
 - 성공시 파일에 쓴 바이트 수, 실패시 -1 또는 size보다 작은값
