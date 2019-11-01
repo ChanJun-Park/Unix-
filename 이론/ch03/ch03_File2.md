@@ -22,13 +22,13 @@
 
 파일에 대한 허가(permission)란 어떤 사용자가 파일을 읽거나(read), 파일에 내용을 쓰거나(write), 파일이 실행 가능한 정보를 담고 있다면 해당 파일을 실행(execute)할 수 있는지 여부를 뜻한다. 이러한 허가(permission)은 보통 `open`이나 `creat` 시스템 호출을 할때 인자로 전달한 `mode_t mode`(화일 모드)를 통해서 설정된다.
 
-화일 모드를 나타내는 인자 `mode`의 하위 9 bit에는 화일에 대한 permission이 설정된다. 맨 처음 3bit는 해당 파일 소유자에 대한 permission, 그 뒤 3 bit는 해당 파일에 접근할 수 있는 그룹에 대한 permission, 마지막 3 bit는 그 외의 사용자에 대한 permission이 설정된다. 각각의 3 bit는 순서대로 파일에 대한 읽기, 쓰기, 실행 허가를 나타낸다. 해당 자리의 bit가 1로 셋팅 되어있으면 그와 연관된 동작을 수행할 수 있다.
+화일 모드를 나타내는 인자 `mode`의 하위 9 bit에는 화일에 대한 permission이 설정된다. 맨 처음 3bit는 해당 파일 소유자에 대한 permission, 그 뒤 3 bit는 파일 소유자가 속한 그룹에 대한 permission, 마지막 3 bit는 그 외의 사용자에 대한 permission이 설정된다. 각각의 3 bit는 순서대로 파일에 대한 읽기, 쓰기, 실행 허가를 나타낸다. 해당 자리의 bit가 1로 셋팅 되어있으면 그와 연관된 동작을 수행할 수 있다.
 
 `mode`파일을 설정할 때는 보통 8진수 정수 형태로 설정하는 것이 대부분이다. 파일 permission과 관련된 상수들이 정의되어 있지만 잘 사용하지 않는다.
 
 ### 3.1.3 수행 가능한 화일에 대한 그 밖의 허가
 
-파일에 대해서 읽기, 쓰기, 실행 허가(permission) 이외에 set-user-id on execution, set-group-id on execution의  추가적인 허가(permission)가 존재한다. 이러한 허가가 설정되어 있으면 파일이 실행가능한 파일인 경우 해당 파일이 실행될 때 파일의 소유자로 설정이 된다. 따라서 effectvie user_id(euid)는 프로세스를 실행시킨 실제 user_id (ruid)와 달라질 수 있다. 이같은 동작은 보안에 민감한 파일들에 대해서 제한적인 접근을 제공하는 인터페이스 구축에 사용될 수 있다.
+파일에 대해서 읽기, 쓰기, 실행 허가(permission) 이외에 set-user-id on execution, set-group-id on execution의  추가적인 허가(permission)가 존재한다. 이러한 허가가 설정되어 있으면 파일이 실행가능한 파일인 경우 해당 파일이 실행될 때 effective user id가 파일의 소유자로 설정이 된다. 따라서 effectvie user_id(euid)는 프로세스를 실행시킨 실제 user_id (ruid)와 달라질 수 있다. 이같은 동작은 보안에 민감한 파일들에 대해서 제한적인 접근을 제공하는 인터페이스 구축에 사용될 수 있다.
 
 ![3](image/3.png)
 
