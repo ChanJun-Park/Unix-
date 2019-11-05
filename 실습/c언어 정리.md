@@ -15,3 +15,31 @@ char * str = "this is sample text";
 ```
 
 위와 같이 선언된 문자열은 읽기 전용이다.
+
+## strspn 함수
+
+```c
+#include <string.h>
+
+size_t strspn(const char *str1, const char *str2);
+```
+
+str1의 맨처음 문자부터 str2 문자열에 포함된 문자만 나타나는 최대 길이
+
+## strtok 함수
+
+```c
+#include <string.h>
+
+char* strtok(char* str, const char* delimeters);
+```
+
+str 문자열을 토큰들로 분리한다.
+
+## type 명령어
+
+```bash
+$ type ipconfig
+```
+
+linux의 bash에서 사용하는 명령어 프로그램이 저장된 위치를 알려준다.
