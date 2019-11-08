@@ -43,3 +43,60 @@ $ type ipconfig
 ```
 
 linux의 bash에서 사용하는 명령어 프로그램이 저장된 위치를 알려준다.
+
+## 시그널과 시스템 호출
+
+긴 시간이 소모되는 시스템 호출이 진행되는 과정에서 시그널에 의해 인터럽트가 발생하는 경우 시스템 호출은 실패하고 -1을 반환하게 된다. 인터럽트된 시스템 호출이 시그널 핸들링이 끝난 시점에서 다시 시작하게 하려면 sigaction 구조체의 sa_flags 필드를 `SA_RESTART`로 설정하면 된다.
+
+> 오류 코드
+
+```c
+...
+main()
+{
+    act.sa_handler = catchsigchld;
+    sigfillset(&(act.sa_mask));         // 처리중에 들어오는 다른 시그널 blocking
+    sigaction(SIGCHLD, &act, NULL);
+
+    ...
+
+    while(1) {
+        makeprompt();
+        fputs(prompt, stdout);
+        fgets(cmdline, BUFSIZ, stdin);  // 여기서 시그널 핸들링이 실행되어 시스템 호출이 인터럽트 될 수 있다.
+        cmdline[strlen(cmdline) - 1] ='\0';
+
+        ...
+    }
+}
+```
+
+> 수정된 코드
+
+```c
+...
+main()
+{
+    act.sa_handler = catchsigchld;
+    sigfillset(&(act.sa_mask));         // 처리중에 들어오는 다른 시그널 blocking
+    //////////////////////////////
+    act.sa_flags = SA_RESTART;  //
+    //////////////////////////////
+    sigaction(SIGCHLD, &act, NULL);
+
+    ...
+
+    while(1) {
+        makeprompt();
+        fputs(prompt, stdout);
+        fgets(cmdline, BUFSIZ, stdin);  // 여기서 시그널 핸들링이 실행되어 시스템 호출이 인터럽트 될 수 있다.
+        cmdline[strlen(cmdline) - 1] ='\0';
+
+        ...
+    }
+}
+```
+
+## getlogin
+
+제어 단말기를 실행시킨 사용자의 이름을 반환한다.
